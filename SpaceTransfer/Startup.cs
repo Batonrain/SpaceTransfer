@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using SpaceTransfer.Db;
+using SpaceTransfer.Db.Repositories;
+using SpaceTransfer.Db.Repositories.Interfaces;
 using SpaceTransfer.Helpers;
 using SpaceTransfer.Services;
 using SpaceTransfer.Services.Interfaces;
@@ -27,7 +30,9 @@ namespace SpaceTransfer
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddCors();
+			services.AddDbContext<ApplicationContext>();
 			services.AddControllers();
+			services.AddAutoMapper(typeof(Startup));
 
 			var appSettingsSection = Configuration.GetSection("AppSettings");
 			services.Configure<AppSettings>(appSettingsSection);
@@ -69,6 +74,7 @@ namespace SpaceTransfer
 				});
 
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IUserRepository, UserRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,4 @@
-﻿namespace SpaceTransfer.Db.Models
+﻿namespace SpaceTransfer.Db.Entities
 {
 	public class User
 	{

@@ -1,15 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpaceTransfer.Db.Models;
+using Microsoft.Extensions.Configuration;
+using SpaceTransfer.Db.Entities;
 
 namespace SpaceTransfer.Db
 {
-	public class ApplicationContext : DbContext
+	public sealed class ApplicationContext : DbContext
 	{
+		private readonly IConfiguration _configuration;
 		public DbSet<User> Users { get; set; }
-		public ApplicationContext(DbContextOptions<ApplicationContext> options)
+		public DbSet<Festival> Festivals { get; set; }
+		public DbSet<Transfer> Transfers { get; set; }
+		public ApplicationContext(
+			DbContextOptions<ApplicationContext> options,
+			IConfiguration configuration)
 			: base(options)
 		{
-			Database.EnsureCreated();   // создаем базу данных при первом обращении
+			_configuration = configuration;
+			// Database.EnsureDeleted();
+			// Database.EnsureCreated();
+		}
+
+		protected override void OnConfiguring(DbContextOptionsBuilder options)
+		{
+			options.UseSqlServer(_configuration.GetConnectionString("WebApiDatabase"));
 		}
 	}
 }

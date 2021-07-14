@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using SpaceTransfer.Db.Models;
+using SpaceTransfer.Db.Entities;
 using SpaceTransfer.Helpers;
 using SpaceTransfer.Models;
 using SpaceTransfer.Services.Interfaces;
 
 namespace SpaceTransfer.Controllers
 {
-	[Authorize]
+	// [Authorize]
 	[ApiController]
 	[Route("[controller]")]
 	public class UserAuthController : Controller
@@ -85,11 +86,11 @@ namespace SpaceTransfer.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult GetAll()
+		public async Task<IActionResult> GetAll()
 		{
-			var users = _userService.GetAll();
-			var model = _mapper.Map<IList<UserModel>>(users);
-			return Ok(model);
+			var users = await _userService.GetAll();
+			// var model = _mapper.Map<IList<UserModel>>(users);
+			return Ok(users);
 		}
 
 		[HttpGet("{id}")]

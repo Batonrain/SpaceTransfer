@@ -1,19 +1,28 @@
 ﻿using System.Collections.Generic;
-using SpaceTransfer.Db.Models;
+using System.Threading.Tasks;
+using SpaceTransfer.Db.Entities;
+using SpaceTransfer.Db.Repositories.Interfaces;
 using SpaceTransfer.Services.Interfaces;
 
 namespace SpaceTransfer.Services
 {
 	public class UserService: IUserService
 	{
+		private readonly IUserRepository _userRepository;
+
+		public UserService(IUserRepository userRepository)
+		{
+			_userRepository = userRepository;
+		}
+
 		public User Authenticate(string username, string password)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public IEnumerable<User> GetAll()
+		public async Task<IEnumerable<User>> GetAll()
 		{
-			throw new System.NotImplementedException();
+			return await _userRepository.GetAll();
 		}
 
 		public User GetById(int id)
